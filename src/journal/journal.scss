@@ -1,0 +1,104 @@
+@font-face{
+  font-family: 'HomepageBaukastenBold';
+  src: url('../fonts/HomepageBaukasten-Bold.eot');
+  src: url('../fonts/HomepageBaukasten-Bold.woff') format('woff');
+}
+
+@font-face{
+  font-family: 'HomepageBaukastenBook';
+  src: url('../fonts/HomepageBaukasten-Book.eot');
+  src: url('../fonts/HomepageBaukasten-Book.woff') format('woff');
+}
+
+@font-face{
+  font-family: 'GothamMedium';
+  src: url('../fonts/Gotham\ Medium.otf');
+}
+
+.journal-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+}
+
+.journal-dashboard {
+  display: flex;
+  flex-direction: column;
+  min-width: 250px;
+  max-width: 250px;
+  height: 100%;
+  background-color: #FAFAFA;
+}
+
+.journal-dashboard-entry {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ECECEC;
+  border-bottom: none;
+  min-height: 65px;
+  max-height: 65px;
+  color: #7A7A7A;
+  padding-left: 25px;
+  padding-top: 25px;
+  font-family: 'HomepageBaukastenBold', Fallback, sans-serif;
+  font-size: 13px;
+
+  &.last {
+    border-bottom: 1px solid #ECECEC;
+  }
+
+  &.selected {
+    background-color: #ECECEC;
+  }
+}
+
+.journal-dashboard-entry-spot {
+  letter-spacing: 0.02em;
+}
+
+.journal-dashboard-entry-date-star-row {
+  display: flex;
+  flex-direction: row;
+  padding-top: 8px;
+}
+
+.journal-dashboard-entry-date {
+  font-weight: 500;
+  padding-right: 55px;
+  letter-spacing: 0.05em;
+  font-family: 'HomepageBaukastenBook', Fallback, sans-serif;
+}
+
+.journal-dashboard-entry-star {
+  width: 15px;
+  height: 15px;
+
+  &.filled {
+    content: url('../icons/filled-in-star.png');
+  }
+
+  &.empty {
+    content: url('../icons/empty-star.png');
+  }
+}
+
+.journal-button {
+  width: 75px;
+  height: 75px;
+  position: fixed;
+  bottom: 65px;
+  right: 65px;
+  border-radius: 50%;
+  background-color: #7BE485;
+  font-family: 'HomepageBaukastenBold', Fallback, sans-serif;
+  font-size: 50px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.journal-button-plus {
+  margin-bottom: 2px;
+  margin-left: 2px;
+}
