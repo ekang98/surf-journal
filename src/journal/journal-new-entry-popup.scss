@@ -1,0 +1,84 @@
+
+.journal-new-entry-box {
+  width: 200px;
+  background-color: #ECECEC;
+  position: fixed;
+  bottom: 140px;
+  right: 65px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.journal-new-entry-box-header {
+  font-family: 'HomepageBaukastenBold', Fallback, sans-serif;
+  font-size: 14px;
+  color: #7A7A7A;
+  letter-spacing: 0.02em;
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+
+.journal-new-entry-box-input {
+  width: 140px;
+  height: 30px;
+  margin-bottom: 5px;
+  font-family: 'HomepageBaukastenBook', Fallback, sans-serif;
+  font-size: 13px;
+  color: #BABABA;
+}
+
+.journal-new-entry-box-ymd-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.journal-new-entry-box-dropdown-year {
+  margin-bottom: 5px;
+  font-family: 'HomepageBaukastenBook', Fallback, sans-serif;
+  font-size: 13px;
+  color: #BABABA;
+}
+
+.journal-new-entry-box-dropdown-month {
+  margin-bottom: 5px;
+  font-family: 'HomepageBaukastenBook', Fallback, sans-serif;
+  font-size: 13px;
+  color: #BABABA;
+}
+
+.journal-new-entry-box-dropdown-day {
+  margin-bottom: 5px;
+  font-family: 'HomepageBaukastenBook', Fallback, sans-serif;
+  font-size: 13px;
+  color: #BABABA;
+}
+
+.journal-new-entry-box-dropdown-time {
+  width: 140px;
+  height: 30px;
+  font-family: 'HomepageBaukastenBook', Fallback, sans-serif;
+  font-size: 13px;
+  color: #BABABA;
+  margin-bottom: 10px;
+}
+
+.journal-new-entry-box-stars {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+.journal-new-entry-box-star {
+  width: 20px;
+  height: 20px;
+
+  &.filled {
+    content: url('../icons/filled-in-star.png');
+  }
+
+  &.empty {
+    content: url('../icons/empty-star.png');
+  }
+}

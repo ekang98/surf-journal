@@ -1,136 +1,112 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './journal.scss';
-import JournalEntry from '../journal-entry/journal-entry'
+import axios from 'axios';
+import moment from 'moment'
+import JournalEntry from './journal-entry'
+import NewEntryPopup from './journal-new-entry-popup'
+import { useAuth } from '../context/auth'
 
-class Journal extends React.Component {
+export default function Journal(props) {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-      entries : this.props.entries,
-      selectedDex : 0,
-		}
-	}
+  const [entries, setEntries] = useState([])
+  const [selectedID, setSelectedID] = useState('')
+  const [showPopup, setShowPopup] = useState(false)
+  const { authTokens } = useAuth()
 
-	generateDashBoardEntries() {
+  useEffect(() => {
+    axios.get('http://localhost:3001/entries/user', { params :{ username :  authTokens }})
+      .then((response) => {
+        setEntries(response.data)
+      }, (error) => {
+        console.log(error)
+      })
+  }, [selectedID])
+
+	function generateDashBoardEntries() {
 		let children = [];
-		for (let i=0; i < this.state.entries.length; i++) {
+		for (let i=0; i < entries.length; i++) {
       let c = "journal-dashboard-entry";
-      if (this.state.selectedDex == i) {
+      if (selectedID === entries[i]._id || (!selectedID && i === 0)) {
         c += " selected"
       }
-      if (this.state.entries.length - 1 === i) {
+      if (entries.length - 1 === i) {
         c += " last"
       }
 
-			children.push(<div className={c} onClick={this.entryClickHandler.bind(this)} data-dex={i}>
-        <div className="journal-dashboard-entry-spot" data-dex={i}>{this.state.entries[i].spot}</div>
-        <div className="journal-dashboard-entry-date-star-row" data-dex={i}>
-          <div className="journal-dashboard-entry-date" data-dex={i}>
-            6/19/20
+			children.push(<div className={c} onClick={(e) => entryClickHandler(e)} id={entries[i]._id} key={entries[i]._id}>
+        <div className="journal-dashboard-entry-spot">{entries[i].spot}</div>
+        <div className="journal-dashboard-entry-date-star-row">
+          <div className="journal-dashboard-entry-date">
+            {moment(entries[i].date).format('MM/DD/YY')}
           </div>
-          {this.generateStars(this.state.entries[i].rating, i)}
+          {generateStars(entries[i].rating, entries[i]._id)}
         </div>
       </div>)
     }
-
 		return children;
   }
   
-  generateStars(rating, dex) {
-    let children = [];
+  function generateStars(rating) {
+    let children = []
     let i = 0
     for (i=0; i < rating; i++) {
-      children.push(<div className="journal-dashboard-entry-star filled" data-dex={dex}></div>);
+      children.push(<div className="journal-dashboard-entry-star filled" key={i}></div>)
     }
     for (let k = i; k < 5; k++) {
-      children.push(<div className="journal-dashboard-entry-star empty" data-dex={dex}></div>);
+      children.push(<div className="journal-dashboard-entry-star empty" key={k}></div>)
     }
     return children
   }
 
-	newEntryHandler() {
-    fetch('http://localhost:3001/entries')
-      .then(response => {
-        return response.text();
-      })
-      .then(data => {
-        console.log(data)
-      });
-		this.setState({
-      entries : [{spot: 'New Entry'}, ...this.state.entries],
-      selectedDex : 0
-    });
+	function newEntryHandler() {
+    setShowPopup(!showPopup)
 	}
 
-	entryClickHandler(e) {
-		this.setState({selectedDex : e.target.getAttribute('data-dex')});
-	}
+	function entryClickHandler(e) {
+    setSelectedID(e.currentTarget.id)
+  }
 
-	render() {
-		return (
-			<div className="journal-container">
-				<div className="journal-button" onClick={() => this.newEntryHandler()}>
-          <div className="journal-button-plus">+</div>
-        </div>
-				<div className="journal-dashboard">
-					{this.generateDashBoardEntries()}
-				</div>
-        <JournalEntry {...this.state.entries[this.state.selectedDex]}/>
-			</div>
-		)
-	}
-}
-
-export default Journal
-
-Journal.defaultProps = {
-	entryNames: [
-		'COUNTY LINE',
-		'Zuma',
-		'Malibu First Point',
-		'Topanga',
-		'Emma Wood',
-		'County Line'
-  ],
-
-  entries: [
-    {
-      id: 0,
-      spot: 'ZUMA BEACH',
-      time: '9:00',
-      tide: 3,
-      tideRising: true,
-      swellSize: 3,
-      swellDirection: 'SSW',
-      swellPeriod: '12',
-      windSpeed: 8,
-      windDirection: 'N',
-      rating: 3
-    },
-    {
-      id: 1,
-      spot: 'COUNTY LINE',
-      time: '10:30',
-      tide: 2,
-      tideRising: true,
-      swellSize: 2,
-      swellDirection: 'S',
-      swellPeriod: '14',
-      windSpeed: 8,
-      windDirection: 'N',
-      rating: 3,
-    },
-    {
-      id: 0,
-      spot: 'COUNTY LINE',
-      time: '10:30',
-      tide: 2,
-      tideRising: true,
-      swellSize: 2,
-      swellDirection: 'S',
-      swellPeriod: '14',
-      rating: 2
+  function deleteHandler() {
+    if (entries.length === 1) {
+      setSelectedID('')
+    } else {
+      for (let i=0; i < entries.length; i++) {
+        if (entries[i]._id === selectedID) {
+          if (i === 0) {
+            setSelectedID(entries[i+1]._id)
+          } else {
+            setSelectedID(entries[i-1]._id)
+          }
+        }
+      }
     }
-  ]
+  }
+  
+  function getSelectedEntry() {
+    if (!selectedID) {
+      return entries[0]
+    }
+
+    for (let i=0; i < entries.length; i++) {
+      if (entries[i]._id === selectedID) {
+        return entries[i]
+      }
+    }
+  }
+  
+  return (
+    <div className="journal-container">
+      <div className="journal-button" onClick={() => newEntryHandler()}>
+        <div className="journal-button-plus">+</div>
+      </div>
+      <NewEntryPopup show={showPopup} setSelectedID={setSelectedID} setShowPopup={setShowPopup}/>
+      <div className="journal-dashboard">
+        {generateDashBoardEntries()}
+      </div>
+      <div className="temp">
+        <JournalEntry {...getSelectedEntry()} deleteHandler={deleteHandler}/>
+        <div className="temp"></div>
+      </div>
+    </div>
+  )
 }

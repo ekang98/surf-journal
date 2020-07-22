@@ -1,7 +1,7 @@
 .journal-entry-container {
   display: flex;
   flex-direction: column;
-  width: 85%;
+  width: 100%;
   overflow-y: scroll;
 }
 
@@ -146,7 +146,7 @@
 }
 
 .journal-entry-log-container {
-  width: 700px;
+  width: 650px;
   min-height: 200px;
   background-color: #FAFAFA;
   margin-left: 190px;

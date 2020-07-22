@@ -86,7 +86,7 @@
   width: 75px;
   height: 75px;
   position: fixed;
-  bottom: 65px;
+  bottom: 45px;
   right: 65px;
   border-radius: 50%;
   background-color: #7BE485;
@@ -101,4 +101,8 @@
 .journal-button-plus {
   margin-bottom: 2px;
   margin-left: 2px;
+}
+
+.temp {
+  width: 100%;
 }

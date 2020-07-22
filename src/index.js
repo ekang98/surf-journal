@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Journal from './journal/journal.js';
+import App from './app.js';
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <React.StrictMode>
-    <Journal />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
